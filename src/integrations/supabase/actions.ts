@@ -27,7 +27,7 @@ export async function getPrompts() {
   return data;
 }
 
-export async function upsertPrompt(prompt: Tables["prompts"]["Insert"]) {
+export async function upsertPrompt(prompt: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -40,7 +40,7 @@ export async function upsertPrompt(prompt: Tables["prompts"]["Insert"]) {
   return data;
 }
 
-export async function upsertPrompts(prompts: Tables["prompts"]["Insert"][]) {
+export async function upsertPrompts(prompts: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -67,7 +67,7 @@ export async function getAgents() {
   return data;
 }
 
-export async function upsertAgent(agent: Tables["agents"]["Insert"]) {
+export async function upsertAgent(agent: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -80,7 +80,7 @@ export async function upsertAgent(agent: Tables["agents"]["Insert"]) {
   return data;
 }
 
-export async function upsertAgents(agents: Tables["agents"]["Insert"][]) {
+export async function upsertAgents(agents: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -107,7 +107,7 @@ export async function getComponents() {
   return data;
 }
 
-export async function upsertComponent(component: Tables["components"]["Insert"]) {
+export async function upsertComponent(component: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -120,7 +120,7 @@ export async function upsertComponent(component: Tables["components"]["Insert"])
   return data;
 }
 
-export async function upsertComponents(components: Tables["components"]["Insert"][]) {
+export async function upsertComponents(components: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -147,7 +147,7 @@ export async function getSnippets() {
   return data;
 }
 
-export async function upsertSnippet(snippet: Tables["snippets"]["Insert"]) {
+export async function upsertSnippet(snippet: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -160,7 +160,7 @@ export async function upsertSnippet(snippet: Tables["snippets"]["Insert"]) {
   return data;
 }
 
-export async function upsertSnippets(snippets: Tables["snippets"]["Insert"][]) {
+export async function upsertSnippets(snippets: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -187,7 +187,7 @@ export async function getTemplates() {
   return data;
 }
 
-export async function upsertTemplate(template: Tables["templates"]["Insert"]) {
+export async function upsertTemplate(template: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -200,7 +200,7 @@ export async function upsertTemplate(template: Tables["templates"]["Insert"]) {
   return data;
 }
 
-export async function upsertTemplates(templates: Tables["templates"]["Insert"][]) {
+export async function upsertTemplates(templates: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -227,7 +227,7 @@ export async function getConnectors() {
   return data;
 }
 
-export async function upsertConnector(connector: Tables["connectors"]["Insert"]) {
+export async function upsertConnector(connector: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -255,7 +255,7 @@ export async function getSocialDrafts() {
   return data;
 }
 
-export async function upsertSocialDraft(draft: Tables["social_drafts"]["Insert"]) {
+export async function upsertSocialDraft(draft: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -283,7 +283,7 @@ export async function getMailTemplates() {
   return data;
 }
 
-export async function upsertMailTemplate(template: Tables["mail_templates"]["Insert"]) {
+export async function upsertMailTemplate(template: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -311,7 +311,7 @@ export async function getInterviewQuestions() {
   return data;
 }
 
-export async function upsertInterviewQuestion(q: Tables["interview_questions"]["Insert"]) {
+export async function upsertInterviewQuestion(q: AnyInsert) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
@@ -324,7 +324,7 @@ export async function upsertInterviewQuestion(q: Tables["interview_questions"]["
   return data;
 }
 
-export async function upsertInterviewQuestions(qs: Tables["interview_questions"]["Insert"][]) {
+export async function upsertInterviewQuestions(qs: AnyInsert[]) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Unauthorized");
 
