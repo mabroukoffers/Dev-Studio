@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { PageHeader, PageContainer, TabNav, SplitLayout } from "@/components/layout";
+import { PageHeader, PageContainer, PageSection, TabNav, SplitLayout } from "@/components/layout";
 import { Mail, Send, MessageCircle } from "lucide-react";
 import { z } from "zod";
 import { useForge, newId } from "@/lib/store";
@@ -22,8 +22,8 @@ export const Route = createFileRoute("/mails")({
 
 const MAIL_TABS = [
   { id: "cover-letter", label: "Cover Letters", icon: Send },
-  { id: "gmail", label: "Professional Emails", icon: Mail },
-  { id: "whatsapp", label: "Business Chat", icon: MessageCircle },
+  { id: "gmail",        label: "Gmail",         icon: Mail },
+  { id: "whatsapp",     label: "WhatsApp",      icon: MessageCircle },
 ];
 
 function MailsPage() {
@@ -34,7 +34,6 @@ function MailsPage() {
   const { mailTemplates, upsertMailTemplate, deleteMailTemplate } = useForge();
   const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
 
-  // Switch active mail when channel changes
   useEffect(() => {
     const channelMails = mailTemplates.filter((m) => m.channel === tab);
     if (channelMails.length > 0 && !channelMails.some((m) => m.id === activeTemplateId)) {
@@ -67,26 +66,23 @@ function MailsPage() {
 
   return (
     <PageContainer>
-      <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
-        <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader
-            title="Communication Hub"
-            description="Manage your professional emails, cover letters, and outreach templates."
-            className="mb-6"
-          />
-          <div className="w-full">
-            <TabNav
-              tabs={MAIL_TABS.map((t) => ({
-                ...t,
-                onClick: () => navigate({ to: ".", search: { tab: t.id } }),
-              }))}
-              activeTab={tab}
-            />
-          </div>
-        </div>
-      </div>
+      <PageSection>
+        <PageHeader
+          icon={Mail}
+          title="Communication Hub"
+          description="Manage your professional emails, cover letters, and outreach templates."
+          className="mb-4"
+        />
+        <TabNav
+          tabs={MAIL_TABS.map((t) => ({
+            ...t,
+            onClick: () => navigate({ to: ".", search: { tab: t.id } }),
+          }))}
+          activeTab={tab}
+        />
+      </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-hidden">
         <SplitLayout
           sidebar={
             <MailsSidebar
@@ -99,14 +95,14 @@ function MailsPage() {
             />
           }
           sidebarWidth="lg:w-[260px]"
-          className="border-t border-border"
+          className=""
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
             <TemplateEditor
               channel={tab}
               activeTemplate={activeMail}
               onUpdateTemplate={handleUpdateMail}
-              onSave={() => console.log("Synced to Supabase!")}
+              onSave={() => {}}
             />
           </div>
         </SplitLayout>

@@ -1,9 +1,10 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { SkillTabs } from "@/components/tech-skills/skill-tabs";
 import { SkillArea } from "@/components/tech-skills/skill-area";
-import { PageHeader, PageContainer } from "@/components/layout";
+import { PageHeader, PageContainer, PageSection } from "@/components/layout";
 import { TECH_AREAS } from "@/data/skills";
 import type { TechAreaId } from "@/types/skills";
+import { Code2 } from "lucide-react";
 import { z } from "zod";
 
 const searchSchema = z.object({
@@ -18,10 +19,7 @@ export const Route = createFileRoute("/tech-skills")({
   head: () => ({
     meta: [
       { title: "Technical Skills Hub — Dev Studio" },
-      {
-        name: "description",
-        content: "Master frontend, backend, devops, testing, and databases with our unified hub.",
-      },
+      { name: "description", content: "Master frontend, backend, devops, testing, and databases with our unified hub." },
     ],
   }),
   component: TechSkillsPage,
@@ -32,20 +30,17 @@ function TechSkillsPage() {
 
   return (
     <PageContainer>
-      <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
-        <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader
-            title="Technical Skills Hub"
-            description="Unified dashboard for engineering excellence and interview preparation."
-            className="mb-6"
-          />
-          <div className="w-full">
-            <SkillTabs />
-          </div>
-        </div>
-      </div>
+      <PageSection>
+        <PageHeader
+          icon={Code2}
+          title="Technical Skills Hub"
+          description="Unified dashboard for engineering excellence and interview preparation."
+          className="mb-4"
+        />
+        <SkillTabs />
+      </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-hidden">
         <SkillArea data={TECH_AREAS[tab as TechAreaId]} />
       </div>
     </PageContainer>

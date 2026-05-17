@@ -1,8 +1,8 @@
-modules = ["nodejs-20", "web", "bash"]
+modules = ["web", "nodejs-22"]
 [agent]
 expertMode = true
 stack = "BEST_EFFORT_FALLBACK"
-integrations = ["javascript_database:1.0.0"]
+integrations = ["javascript_database:1.0.0", "javascript_openai_ai_integrations:2.0.0"]
 
 [nix]
 channel = "stable-25_05"
@@ -23,27 +23,29 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[ports]]
 localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5001
+localPort = 24678
 externalPort = 3000
 
-[[ports]]
-localPort = 24678
-externalPort = 3001
-
 [deployment]
-deploymentTarget = "static"
+deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
 publicDir = "dist"
+run = ["node", "--import", "tsx/esm", "server.ts"]
+
+[userenv]
+
+[userenv.shared]
+JWT_SECRET = "b5f03356f3138ad3969ad05f0ef38622d6154aec8a3eeff25e7d94fc105c511ce2305804803477e41ac3bc92058df8cf"

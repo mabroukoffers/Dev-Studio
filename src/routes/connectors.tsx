@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { PageHeader, PageContainer, TabNav, SplitLayout } from "@/components/layout";
+import { PageHeader, PageContainer, PageSection, TabNav, SplitLayout } from "@/components/layout";
 import { Users, Building2, Briefcase } from "lucide-react";
 import { z } from "zod";
 import { useForge, newId } from "@/lib/store";
@@ -21,9 +21,9 @@ export const Route = createFileRoute("/connectors")({
 });
 
 const CONNECTORS_TABS = [
-  { id: "companies", label: "Companies", icon: Building2 },
-  { id: "hr", label: "HR Contacts", icon: Briefcase },
-  { id: "clients", label: "Clients", icon: Users },
+  { id: "companies", label: "Companies",   icon: Building2 },
+  { id: "hr",        label: "HR Contacts", icon: Briefcase },
+  { id: "clients",   label: "Clients",     icon: Users },
 ];
 
 function ConnectorsPage() {
@@ -34,7 +34,6 @@ function ConnectorsPage() {
   const { connectors, upsertConnector, deleteConnector } = useForge();
   const [activeConnectorId, setActiveConnectorId] = useState<string | null>(null);
 
-  // Switch active connector when tab changes
   useEffect(() => {
     const tabConnectors = connectors.filter((c) => c.type === tab);
     if (tabConnectors.length > 0 && !tabConnectors.some((c) => c.id === activeConnectorId)) {
@@ -69,26 +68,23 @@ function ConnectorsPage() {
 
   return (
     <PageContainer>
-      <div className="px-4 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 border-b border-border bg-background">
-        <div className="max-w-[1400px] mx-auto w-full">
-          <PageHeader
-            title="Connectors"
-            description="Manage your professional network, clients, and company contacts."
-            className="mb-6"
-          />
-          <div className="w-full overflow-hidden">
-            <TabNav
-              tabs={CONNECTORS_TABS.map((t) => ({
-                ...t,
-                onClick: () => navigate({ to: ".", search: { tab: t.id } }),
-              }))}
-              activeTab={tab}
-            />
-          </div>
-        </div>
-      </div>
+      <PageSection>
+        <PageHeader
+          icon={Users}
+          title="Connectors"
+          description="Manage your professional network, clients, and company contacts."
+          className="mb-4"
+        />
+        <TabNav
+          tabs={CONNECTORS_TABS.map((t) => ({
+            ...t,
+            onClick: () => navigate({ to: ".", search: { tab: t.id } }),
+          }))}
+          activeTab={tab}
+        />
+      </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-hidden">
         <SplitLayout
           sidebar={
             <ConnectorsSidebar
@@ -101,14 +97,14 @@ function ConnectorsPage() {
             />
           }
           sidebarWidth="lg:w-[260px]"
-          className="border-t border-border"
+          className=""
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
             <ConnectorEditor
               type={tab}
               activeConnector={activeConnector}
               onUpdateConnector={handleUpdateConnector}
-              onSave={() => console.log("Synced to Supabase!")}
+              onSave={() => {}}
             />
           </div>
         </SplitLayout>

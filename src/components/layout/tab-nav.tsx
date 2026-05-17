@@ -8,6 +8,7 @@ interface TabItem {
   to?: string;
   search?: Record<string, unknown>;
   onClick?: () => void;
+  badge?: number | string;
 }
 
 interface TabNavProps {
@@ -18,22 +19,14 @@ interface TabNavProps {
 
 export function TabNav({ tabs, activeTab, className = "" }: TabNavProps) {
   return (
-    <div className={`w-full overflow-x-auto pb-2 -mb-2 ${className}`}>
-      {/* 
-        This structure guarantees:
-        1. On large screens: perfectly centered.
-        2. On small screens: scrolls from left to right.
-        3. Never clips edges because we use real DOM spacers instead of padding.
-      */}
-      <div className="flex w-max min-w-full sm:justify-center">
-        {/* Left spacer */}
+    <div className={`w-full overflow-x-auto ${className}`}>
+      <div className="flex w-max min-w-full sm:justify-start">
         <div className="w-1 shrink-0 sm:hidden" />
-        
+
         <nav
-          className="flex shrink-0 items-center gap-1.5 p-1 bg-muted/30 border border-border rounded-lg"
+          className="flex shrink-0 items-center gap-1 p-1 bg-muted/40 border border-border/60 rounded-2xl"
           aria-label="Tabs"
         >
-          <div className="flex items-center gap-1.5 px-0.5">
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
             const Icon = tab.icon;
@@ -42,17 +35,30 @@ export function TabNav({ tabs, activeTab, className = "" }: TabNavProps) {
               <>
                 {Icon && (
                   <Icon
-                    className={`size-3.5 transition-colors ${active ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`}
+                    className={`size-3.5 shrink-0 transition-colors ${
+                      active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                    }`}
                   />
                 )}
-                <span className="relative z-10">{tab.label}</span>
+                <span className="relative z-10 whitespace-nowrap">{tab.label}</span>
+                {tab.badge != null && tab.badge !== 0 && (
+                  <span
+                    className={`min-w-[16px] text-center text-[10px] leading-none px-1 py-0.5 rounded-full ${
+                      active
+                        ? "bg-primary/20 text-primary"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {tab.badge}
+                  </span>
+                )}
               </>
             );
 
-            const baseClass = `group flex items-center gap-2 px-4 py-2 text-[10px] font-mono uppercase tracking-widest transition-all rounded-md border whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+            const baseClass = `group flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all rounded-xl whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
               active
-                ? "bg-primary text-primary-foreground border-primary shadow-sm font-semibold"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted border-transparent focus-visible:border-border"
+                ? "bg-background text-foreground shadow-sm border border-border/60"
+                : "text-muted-foreground hover:text-foreground hover:bg-background/60"
             }`;
 
             if (tab.to) {
@@ -69,10 +75,8 @@ export function TabNav({ tabs, activeTab, className = "" }: TabNavProps) {
               </button>
             );
           })}
-          </div>
         </nav>
-        
-        {/* Right spacer */}
+
         <div className="w-4 shrink-0 sm:hidden" />
       </div>
     </div>

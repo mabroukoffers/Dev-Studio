@@ -15,8 +15,11 @@ import { Route as SoftSkillsRouteImport } from './routes/soft-skills'
 import { Route as SocialRouteImport } from './routes/social'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as MailsRouteImport } from './routes/mails'
+import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as InterviewRouteImport } from './routes/interview'
+import { Route as CvRouteImport } from './routes/cv'
 import { Route as ConnectorsRouteImport } from './routes/connectors'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -51,14 +54,29 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlannerRoute = PlannerRouteImport.update({
+  id: '/planner',
+  path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MailsRoute = MailsRouteImport.update({
   id: '/mails',
   path: '/mails',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InterviewRoute = InterviewRouteImport.update({
   id: '/interview',
   path: '/interview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnectorsRoute = ConnectorsRouteImport.update({
@@ -81,8 +99,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/connectors': typeof ConnectorsRoute
+  '/cv': typeof CvRoute
   '/interview': typeof InterviewRoute
+  '/jobs': typeof JobsRoute
   '/mails': typeof MailsRoute
+  '/planner': typeof PlannerRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/social': typeof SocialRoute
@@ -94,8 +115,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/connectors': typeof ConnectorsRoute
+  '/cv': typeof CvRoute
   '/interview': typeof InterviewRoute
+  '/jobs': typeof JobsRoute
   '/mails': typeof MailsRoute
+  '/planner': typeof PlannerRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/social': typeof SocialRoute
@@ -108,8 +132,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/connectors': typeof ConnectorsRoute
+  '/cv': typeof CvRoute
   '/interview': typeof InterviewRoute
+  '/jobs': typeof JobsRoute
   '/mails': typeof MailsRoute
+  '/planner': typeof PlannerRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/social': typeof SocialRoute
@@ -123,8 +150,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/connectors'
+    | '/cv'
     | '/interview'
+    | '/jobs'
     | '/mails'
+    | '/planner'
     | '/profile'
     | '/sitemap.xml'
     | '/social'
@@ -136,8 +166,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/connectors'
+    | '/cv'
     | '/interview'
+    | '/jobs'
     | '/mails'
+    | '/planner'
     | '/profile'
     | '/sitemap.xml'
     | '/social'
@@ -149,8 +182,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/connectors'
+    | '/cv'
     | '/interview'
+    | '/jobs'
     | '/mails'
+    | '/planner'
     | '/profile'
     | '/sitemap.xml'
     | '/social'
@@ -163,8 +199,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   ConnectorsRoute: typeof ConnectorsRoute
+  CvRoute: typeof CvRoute
   InterviewRoute: typeof InterviewRoute
+  JobsRoute: typeof JobsRoute
   MailsRoute: typeof MailsRoute
+  PlannerRoute: typeof PlannerRoute
   ProfileRoute: typeof ProfileRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SocialRoute: typeof SocialRoute
@@ -217,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/planner': {
+      id: '/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mails': {
       id: '/mails'
       path: '/mails'
@@ -224,11 +270,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MailsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/interview': {
       id: '/interview'
       path: '/interview'
       fullPath: '/interview'
       preLoaderRoute: typeof InterviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connectors': {
@@ -259,8 +319,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   ConnectorsRoute: ConnectorsRoute,
+  CvRoute: CvRoute,
   InterviewRoute: InterviewRoute,
+  JobsRoute: JobsRoute,
   MailsRoute: MailsRoute,
+  PlannerRoute: PlannerRoute,
   ProfileRoute: ProfileRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SocialRoute: SocialRoute,
