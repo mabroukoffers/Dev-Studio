@@ -1,6 +1,10 @@
-import swaggerSpec from "./swagger-spec.json" assert { type: "json" };
+import { createRequire } from "module";
 import swaggerUi from "swagger-ui-express";
 import type { Express } from "express";
+
+const require = createRequire(import.meta.url);
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const swaggerSpec = require("./swagger-spec.json") as Record<string, unknown>;
 
 export function setupSwagger(app: Express) {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -11,5 +15,6 @@ export function setupSwagger(app: Express) {
     res.send(swaggerSpec);
   });
 }
+
 
 
