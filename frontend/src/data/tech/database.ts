@@ -319,5 +319,139 @@ export const databaseArea: SkillAreaData = {
         { id: "sq-migrate", label: "Schema changes via versioned migration scripts" },
       ],
     },
+    {
+      id: "sqlserver",
+      label: "SQL Server",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["sqlserver", "mssql", "tsql", "sql", "database"],
+      concepts: [
+        {
+          title: "T-SQL vs Standard SQL",
+          body: "SQL Server uses T-SQL (Transact-SQL), Microsoft's extension of ANSI SQL. T-SQL adds procedural constructs: IF/ELSE, WHILE loops, TRY/CATCH, stored procedures, functions, and triggers. Common T-SQL-specific syntax: TOP N instead of LIMIT, GETDATE() instead of NOW(), IDENTITY columns for auto-increment, NOLOCK hints.",
+        },
+        {
+          title: "Clustered vs Non-Clustered Indexes",
+          body: "Clustered index determines the physical storage order of table rows — only one per table (usually the primary key). Non-clustered index is a separate B-Tree structure with pointers to data rows. A table without a clustered index is a heap (unordered). Covering index: a non-clustered index that includes all columns needed by a query (INCLUDE clause) — avoids key lookups.",
+        },
+        {
+          title: "Execution Plans & Query Tuning",
+          body: "Use SET STATISTICS IO ON and SET STATISTICS TIME ON to measure query cost. View execution plans in SSMS (Ctrl+M for actual plan). Look for: Table Scan / Clustered Index Scan (missing index), Key Lookup (add INCLUDE columns to index), Parameter Sniffing issues (use OPTION (RECOMPILE) or OPTIMIZE FOR). sys.dm_exec_query_stats shows expensive cached queries.",
+        },
+        {
+          title: "Transactions & Isolation Levels",
+          body: "SQL Server isolation levels: READ UNCOMMITTED (dirty reads, fastest), READ COMMITTED (default, no dirty reads), REPEATABLE READ (no dirty/non-repeatable reads), SERIALIZABLE (full isolation, slowest). READ COMMITTED SNAPSHOT ISOLATION (RCSI) provides optimistic concurrency like MVCC — eliminates most blocking. Enable with: ALTER DATABASE db SET READ_COMMITTED_SNAPSHOT ON.",
+        },
+        {
+          title: "Always On Availability Groups",
+          body: "SQL Server's HA/DR solution. A primary replica handles reads/writes; secondary replicas receive log shipping and can serve read-only queries. Failover can be automatic (synchronous commit) or manual (asynchronous). Listener provides a virtual network name — clients connect to the listener, not individual replicas. Windows Server Failover Cluster (WSFC) manages the quorum.",
+        },
+        {
+          title: "Common Table Expressions (CTEs) & Window Functions",
+          body: "CTEs (WITH clause) break complex queries into named sub-results — recursion possible for hierarchical data. Window functions (ROW_NUMBER, RANK, DENSE_RANK, LEAD, LAG, SUM OVER PARTITION BY) perform calculations across a set of rows without grouping. Essential for ranking, pagination, and running totals without self-joins.",
+        },
+      ],
+      resources: [
+        {
+          label: "SQL Server Docs",
+          url: "https://learn.microsoft.com/en-us/sql/sql-server",
+          desc: "Official Microsoft SQL Server documentation and T-SQL reference.",
+        },
+        {
+          label: "Brent Ozar's Blog",
+          url: "https://www.brentozar.com/blog",
+          desc: "Expert SQL Server performance tuning, execution plans, and index advice.",
+        },
+        {
+          label: "Use The Index, Luke",
+          url: "https://use-the-index-luke.com",
+          desc: "SQL indexing guide that covers SQL Server alongside other databases.",
+        },
+        {
+          label: "SQL Server Central",
+          url: "https://www.sqlservercentral.com",
+          desc: "Community articles, scripts, and Q&A for SQL Server professionals.",
+        },
+      ],
+      checklist: [
+        { id: "ss-rcsi", label: "READ_COMMITTED_SNAPSHOT ISOLATION enabled to reduce blocking" },
+        { id: "ss-index", label: "Clustered index on primary key; non-clustered on all filtered columns" },
+        { id: "ss-plan", label: "Execution plans reviewed — no Table Scan or Key Lookup in hot paths" },
+        { id: "ss-txn", label: "Explicit transactions for multi-step writes with TRY/CATCH/ROLLBACK" },
+        { id: "ss-prepared", label: "Parameterized queries or stored procedures — no string concatenation" },
+        { id: "ss-backup", label: "Full + differential + log backups configured; restore tested" },
+        { id: "ss-ag", label: "Always On AG or at minimum database mirroring for HA" },
+        { id: "ss-stats", label: "Statistics updated regularly (auto-update stats enabled)" },
+        { id: "ss-sa", label: "SA account disabled or renamed; least-privilege app accounts used" },
+        { id: "ss-tde", label: "Transparent Data Encryption (TDE) enabled for sensitive data at rest" },
+      ],
+    },
+    {
+      id: "elasticsearch",
+      label: "Elasticsearch",
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["elasticsearch", "elastic", "opensearch", "search", "database"],
+      concepts: [
+        {
+          title: "Inverted Index & Full-Text Search",
+          body: "Elasticsearch is built on Apache Lucene. At its core is the inverted index — a mapping from each unique token (word/term) to the documents containing it. During indexing, text is analyzed (tokenized, lowercased, stemmed). Queries match against this index in O(1) lookups. This is why Elasticsearch excels at full-text search over relational databases.",
+        },
+        {
+          title: "Indices, Shards & Replicas",
+          body: "An index is a logical collection of documents (similar to a table). Elasticsearch shards indices across nodes — each shard is a self-contained Lucene index. Primary shards handle writes; replica shards serve reads and provide HA. Rule of thumb: shard size 10–50 GB. Too many small shards wastes overhead; too few large shards limits parallelism.",
+        },
+        {
+          title: "Mappings & Data Types",
+          body: "A mapping defines the schema for an index. Key types: text (analyzed for full-text search), keyword (exact match, aggregation), date, long/integer/float, boolean, object, nested (array of objects with independent field correlation), geo_point. Dynamic mapping auto-detects types — disable in production and define explicit mappings to avoid mapping explosions.",
+        },
+        {
+          title: "Query DSL",
+          body: "Elasticsearch queries are JSON. match: full-text analyzed search. term: exact keyword match (no analysis). bool: combine queries with must (AND), should (OR), must_not, filter (no scoring). Use filter context for exact matches (faster, cached). Use query context for relevance scoring. multi_match: search across multiple fields. range: date/number ranges.",
+        },
+        {
+          title: "Aggregations",
+          body: "Aggregations perform analytics over matched documents. Bucket aggregations: terms (group by value), date_histogram (time-series), range (custom ranges). Metric aggregations: avg, sum, min, max, cardinality (distinct count), percentiles. Pipeline aggregations: moving_avg, derivative. Aggregations compose — a bucket can contain nested sub-aggregations.",
+        },
+        {
+          title: "Relevance Scoring & Analyzers",
+          body: "Elasticsearch scores documents using BM25 (default, improved TF-IDF). Boost specific fields with field^2. Custom analyzers: char_filter (pre-process text) → tokenizer (split into tokens) → token_filter (lowercase, stemming, synonyms, stopwords). Use _analyze API to debug how text is tokenized. For exact matching, always use keyword type or .keyword sub-field.",
+        },
+      ],
+      resources: [
+        {
+          label: "Elasticsearch Docs",
+          url: "https://www.elastic.co/docs",
+          desc: "Official Elasticsearch documentation with Query DSL and API reference.",
+        },
+        {
+          label: "Elasticsearch: The Definitive Guide",
+          url: "https://www.elastic.co/guide/en/elasticsearch/guide/current/index.html",
+          desc: "Free comprehensive guide to Elasticsearch concepts and internals.",
+        },
+        {
+          label: "Elastic Blog",
+          url: "https://www.elastic.co/blog",
+          desc: "Engineering posts on search performance, mappings, and new features.",
+        },
+        {
+          label: "OpenSearch Docs",
+          url: "https://opensearch.org/docs/latest",
+          desc: "AWS-managed fork of Elasticsearch — API-compatible, open source.",
+        },
+      ],
+      checklist: [
+        { id: "es-mapping", label: "Explicit mappings defined — dynamic mapping disabled in production" },
+        { id: "es-keyword", label: "keyword type used for exact match/aggregation fields; text for search" },
+        { id: "es-shards", label: "Shard size kept 10–50 GB; shard count not over-allocated" },
+        { id: "es-replicas", label: "At least 1 replica per index for HA (no single-shard unprotected)" },
+        { id: "es-filter", label: "Filters used over queries for non-scoring exact matches (cached)" },
+        { id: "es-analyzer", label: "Custom analyzer tested with _analyze API before production" },
+        { id: "es-alias", label: "Index aliases used for zero-downtime re-indexing" },
+        { id: "es-ilm", label: "Index Lifecycle Management (ILM) configured for time-series data" },
+        { id: "es-security", label: "TLS and role-based security enabled — no anonymous access" },
+        { id: "es-snapshot", label: "Snapshot repository configured with automated daily snapshots" },
+      ],
+    },
   ],
 };
